@@ -1,4 +1,4 @@
-FROM golang:alpine AS builder
+FROM golang:1.24.2-alpine AS builder
 WORKDIR /app
 
 COPY go.mod go.sum ./
@@ -16,6 +16,7 @@ COPY --from=builder /app/todo_app .
 
 COPY --from=builder /app/web ./web
 
-EXPOSE 7540
+ENV TODO_PORT=7540
+EXPOSE $TODO_PORT
 
 CMD ["./todo_app"]

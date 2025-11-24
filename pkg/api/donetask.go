@@ -7,6 +7,10 @@ import (
 )
 
 func doneTaskHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
 	id := r.FormValue("id")
 	if id == "" {
 		sendJson(w, ErrorResponse{Error: "id is required"})

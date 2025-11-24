@@ -55,25 +55,25 @@ func checkDate(task *db.Task) error {
 	}
 	now = now.Truncate(24 * time.Hour)
 
-	if t.Before(now) {
-		if len(task.Repeat) == 0 {
-			task.Date = now.Format("20060102")
-
-		} else {
-			nextDate, e := NextDate(now, task.Date, task.Repeat)
-			if e != nil {
-				return e // Ошибка в правиле
-			}
-			task.Date = nextDate
-		}
-	} else {
+	if !t.Before(now) {
 		if task.Repeat != "" {
-			_, er := NextDate(now, task.Date, task.Repeat)
-			if er != nil {
-				return er
+			_, e := NextDate(now, task.Date, task.Repeat)
+			if e != nil {
+				return e
 			}
 		}
+
+		return nil
 	}
+	if task.Repeat == "" {
+		task.Date = now.Format("20060102")
+		return nil
+	}
+	nextDate, er := NextDate(now, task.Date, task.Repeat)
+	if er != nil {
+		return er
+	}
+	task.Date = nextDate
 
 	return nil
 }

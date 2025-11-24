@@ -46,3 +46,6 @@ func createTable(db *sql.DB) error {
 	}
 	return nil
 }
+func Close() error {
+	return db.Close()
+}

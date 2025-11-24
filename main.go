@@ -22,6 +22,7 @@ func main() {
 	if e != nil {
 		log.Fatalf("Error conection to db: %v", e)
 	}
+	defer db.Close()
 
 	err := server.Run(port, webDir)
 	if err != nil {
