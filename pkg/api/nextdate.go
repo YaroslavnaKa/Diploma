@@ -9,7 +9,7 @@ import (
 )
 
 func NextDate(now time.Time, dstart string, repeat string) (string, error) {
-	d, err := time.Parse("20060102", dstart)
+	d, err := time.Parse(DateFormat, dstart)
 	if err != nil {
 		return "", err
 	}
@@ -34,14 +34,14 @@ func NextDate(now time.Time, dstart string, repeat string) (string, error) {
 		for !d.After(now) {
 			d = d.AddDate(0, 0, days)
 		}
-		return d.Format("20060102"), nil
+		return d.Format(DateFormat), nil
 	}
 	if sr == "y" {
 		d = d.AddDate(1, 0, 0)
 		for !d.After(now) {
 			d = d.AddDate(1, 0, 0)
 		}
-		return d.Format("20060102"), nil
+		return d.Format(DateFormat), nil
 	}
 	if sr == "w" {
 		if len(r) < 2 {
@@ -70,7 +70,7 @@ func NextDate(now time.Time, dstart string, repeat string) (string, error) {
 				break
 			}
 		}
-		return d.Format("20060102"), nil
+		return d.Format(DateFormat), nil
 
 	}
 	if sr == "m" {
@@ -117,13 +117,13 @@ func NextDate(now time.Time, dstart string, repeat string) (string, error) {
 				}
 			}
 			if days[d.Day()] {
-				return d.Format("20060102"), nil
+				return d.Format(DateFormat), nil
 			}
 			nextDay := d.AddDate(0, 0, 1)
 			isLastDay := nextDay.Month() != d.Month()
 			if isLastDay {
 				if days[-1] {
-					return d.Format("20060102"), nil
+					return d.Format(DateFormat), nil
 				}
 			}
 
@@ -132,7 +132,7 @@ func NextDate(now time.Time, dstart string, repeat string) (string, error) {
 
 			if isPenultimateDay && !isLastDay {
 				if days[-2] {
-					return d.Format("20060102"), nil
+					return d.Format(DateFormat), nil
 				}
 			}
 		}
